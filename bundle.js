@@ -20756,77 +20756,161 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 module.exports = require('./lib/React');
 
 },{"./lib/React":28}],172:[function(require,module,exports){
-"use strict";
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _BasicsForm = require("./BasicsForm");
+var _BasicsForm = require('./BasicsForm');
 
 var _BasicsForm2 = _interopRequireDefault(_BasicsForm);
-
-var _Location = require("./Location");
-
-var _Location2 = _interopRequireDefault(_Location);
-
-var _Profiles = require("./Profiles");
-
-var _Profiles2 = _interopRequireDefault(_Profiles);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var React = require('react');
 
 var Basics = React.createClass({
-    displayName: "Basics",
+    displayName: 'Basics',
 
-
+    key: 0,
+    getInitialState: function getInitialState() {
+        return { basics: {} };
+    },
+    handleBasicsSubmit: function handleBasicsSubmit(basics) {
+        this.setState({ basics: basics });
+        console.log(this.state);
+    },
     render: function render() {
         return React.createElement(
-            "div",
-            { className: "basics" },
+            'div',
+            { className: 'basics' },
+            React.createElement('a', { name: this.props.name }),
             React.createElement(
-                "h2",
+                'h2',
                 null,
-                " Basic Information "
+                ' Basics '
             ),
-            React.createElement(_BasicsForm2.default, null),
-            React.createElement(
-                "h2",
-                null,
-                " Location "
-            ),
-            React.createElement(_Location2.default, null),
-            React.createElement(
-                "h2",
-                null,
-                " Profiles "
-            ),
-            React.createElement(_Profiles2.default, null)
+            React.createElement(_BasicsForm2.default, { onBasicsSubmit: this.handleBasicsSubmit })
         );
     }
 });
 exports.default = Basics;
 
-},{"./BasicsForm":173,"./Location":181,"./Profiles":183,"react":171}],173:[function(require,module,exports){
+},{"./BasicsForm":173,"react":171}],173:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+
+var _ProfileForm = require('./ProfileForm');
+
+var _ProfileForm2 = _interopRequireDefault(_ProfileForm);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 var React = require("react");
+
 var BasicsForm = React.createClass({
     displayName: 'BasicsForm',
 
+    key: 0,
     getInitialState: function getInitialState() {
         return { name: '',
             label: '',
             email: '',
             phone: '',
             website: '',
-            summary: ''
+            summary: '',
+            location: {
+                address: '',
+                postalCode: '',
+                city: '',
+                countryCode: '',
+                region: ''
+            },
+            profiles: []
         };
+    },
+    handleSubmit: function handleSubmit(evt) {
+        evt.preventDefault();
+        var name = this.refs.name.value.trim();
+        var label = this.refs.label.value.trim();
+        var email = this.refs.email.value.trim();
+        var phone = this.refs.phone.value.trim();
+        var website = this.refs.website.value.trim();
+        var summary = this.refs.summary.value.trim();
+        var address = this.refs.address.value.trim();
+        var postalCode = this.refs.postalCode.value.trim();
+        var city = this.refs.city.value.trim();
+        var countryCode = this.refs.countryCode.value.trim();
+        var region = this.refs.region.value.trim();
+        var profiles = this.state.profiles;
+        if (!region || !countryCode || !city || !phone || !email || !label || !name) {
+            return;
+        }
+        this.setState({ name: name });
+        this.setState({ label: label });
+        this.setState({ email: email });
+        this.setState({ phone: phone });
+        this.setState({ website: website });
+        this.setState({ summary: summary });
+        this.setState({ location: { address: address } });
+        this.setState({ location: { postalCode: postalCode } });
+        this.setState({ location: { city: city } });
+        this.setState({ location: { countryCode: countryCode } });
+        this.setState({ location: { region: region } });
+        console.log(this.state);
+        this.props.onBasicsSubmit({ name: name,
+            label: label,
+            email: email,
+            phone: phone,
+            website: website,
+            summary: summary,
+            location: {
+                address: address,
+                postalCode: postalCode,
+                city: city,
+                countryCode: countryCode,
+                region: region
+            },
+            profiles: profiles
+        });
+    },
+    handleProfileSubmit: function handleProfileSubmit(profile) {
+        var profiles = this.state.profiles;
+        profiles = profiles.concat(profile);
+        this.setState({ profiles: profiles });
+        var name = this.refs.name.value.trim();
+        var label = this.refs.label.value.trim();
+        var email = this.refs.email.value.trim();
+        var phone = this.refs.phone.value.trim();
+        var website = this.refs.website.value.trim();
+        var summary = this.refs.summary.value.trim();
+        var address = this.refs.address.value.trim();
+        var postalCode = this.refs.postalCode.value.trim();
+        var city = this.refs.city.value.trim();
+        var countryCode = this.refs.countryCode.value.trim();
+        var region = this.refs.region.value.trim();
+        if (!region || !countryCode || !city || !phone || !email || !label || !name) {
+            return;
+        }
+        this.props.onBasicsSubmit({ name: name,
+            label: label,
+            email: email,
+            phone: phone,
+            website: website,
+            summary: summary,
+            location: {
+                address: address,
+                postalCode: postalCode,
+                city: city,
+                countryCode: countryCode,
+                region: region
+            },
+            profiles: profiles
+        });
     },
     handleNameChange: function handleNameChange(evt) {
         this.setState({ name: evt.target.value });
@@ -20846,28 +20930,136 @@ var BasicsForm = React.createClass({
     handleSummaryChange: function handleSummaryChange(evt) {
         this.setState({ summary: evt.target.value });
     },
+    handleAddressChange: function handleAddressChange(evt) {
+        this.setState({ location: { address: evt.target.value } });
+    },
+    handlePostalCodeChange: function handlePostalCodeChange(evt) {
+        this.setState({ location: { postalCode: evt.target.value } });
+    },
+    handleCityChange: function handleCityChange(evt) {
+        this.setState({ location: { city: evt.target.value } });
+    },
+    handleCountryCodeChange: function handleCountryCodeChange(evt) {
+        this.setState({ location: { countryCode: evt.target.value } });
+    }, handleRegionChange: function handleRegionChange(evt) {
+        this.setState({ location: { region: evt.target.value } });
+    },
     render: function render() {
         return React.createElement(
-            'form',
-            { className: 'basicsForm' },
-            React.createElement('input', { type: 'text', placeholder: 'Name', ref: 'name',
-                value: this.state.name, onChange: this.handleNameChange }),
-            React.createElement('input', { type: 'text', placeholder: 'Title', ref: 'label',
-                value: this.state.label, onChange: this.handleLabelChange }),
-            React.createElement('input', { type: 'text', placeholder: 'Email', ref: 'email',
-                value: this.state.email, onChange: this.handleEmailChange }),
-            React.createElement('input', { type: 'text', placeholder: 'Phone #', ref: 'phone',
-                value: this.state.phone, onChange: this.handlePhoneChange }),
-            React.createElement('input', { type: 'text', placeholder: 'Website', ref: 'website',
-                value: this.state.website, onChange: this.handleWebsiteChange }),
-            React.createElement('input', { type: 'text', placeholder: 'Description', ref: 'summary',
-                value: this.state.summary, onChange: this.handleSummaryChange })
+            'div',
+            { className: 'basics' },
+            React.createElement('a', { name: this.props.name }),
+            React.createElement(
+                'div',
+                { className: 'basicInformation' },
+                React.createElement(
+                    'form',
+                    { className: 'basicsForm', onSubmit: this.handleSubmit },
+                    React.createElement(
+                        'fieldset',
+                        null,
+                        React.createElement(
+                            'legend',
+                            null,
+                            ' Basic Information '
+                        ),
+                        React.createElement(
+                            'label',
+                            { htmlFor: 'name' },
+                            'Name'
+                        ),
+                        React.createElement('input', { type: 'text', id: 'name', placeholder: 'Name', ref: 'name',
+                            value: this.state.name, onChange: this.handleNameChange }),
+                        React.createElement(
+                            'label',
+                            { htmlFor: 'title' },
+                            'Title'
+                        ),
+                        React.createElement('input', { type: 'text', id: 'title', placeholder: 'Title', ref: 'label',
+                            value: this.state.label, onChange: this.handleLabelChange }),
+                        React.createElement(
+                            'label',
+                            { htmlFor: 'email' },
+                            'Email'
+                        ),
+                        React.createElement('input', { type: 'email', id: 'email', placeholder: 'Email', ref: 'email',
+                            value: this.state.email, onChange: this.handleEmailChange }),
+                        React.createElement(
+                            'label',
+                            { htmlFor: 'phoneNumber' },
+                            'Phone Number'
+                        ),
+                        React.createElement('input', { type: 'tel', id: 'phoneNumber', placeholder: 'Phone #', ref: 'phone',
+                            value: this.state.phone, onChange: this.handlePhoneChange }),
+                        React.createElement(
+                            'label',
+                            { htmlFor: 'website' },
+                            'Website'
+                        ),
+                        React.createElement('input', { type: 'url', id: 'website', placeholder: 'Website', ref: 'website',
+                            value: this.state.website, onChange: this.handleWebsiteChange }),
+                        React.createElement(
+                            'label',
+                            { htmlFor: 'basicsSummary' },
+                            'Summary '
+                        ),
+                        React.createElement('textArea', { className: 'basicsSummary', placeholder: 'Summary...', ref: 'summary',
+                            value: this.state.summary, onChange: this.handleSummaryChange }),
+                        React.createElement(
+                            'label',
+                            { htmlFor: 'address' },
+                            'Address'
+                        ),
+                        React.createElement('input', { type: 'text', id: 'address', placeholder: 'Address', ref: 'address',
+                            value: this.state.location.address, onChange: this.handleAddressChange }),
+                        React.createElement(
+                            'span',
+                            { className: 'postalCode' },
+                            React.createElement(
+                                'label',
+                                { htmlFor: 'postalCode' },
+                                'Postal Code'
+                            ),
+                            React.createElement('input', { type: 'text', placeholder: 'Postal Code', ref: 'postalCode',
+                                value: this.state.location.postalCode, onChange: this.handlePostalCodeChange })
+                        ),
+                        React.createElement(
+                            'label',
+                            { htmlFor: 'city' },
+                            'City'
+                        ),
+                        React.createElement('input', { type: 'text', id: 'city', placeholder: 'City', ref: 'city',
+                            value: this.state.location.city, onChange: this.handleCityChange }),
+                        React.createElement(
+                            'label',
+                            { htmlFor: 'region' },
+                            'State or Province'
+                        ),
+                        React.createElement('input', { type: 'text', id: 'region', placeholder: 'State or Province', ref: 'region',
+                            value: this.state.location.region, onChange: this.handleRegionChange }),
+                        React.createElement(
+                            'label',
+                            { htmlFor: 'country' },
+                            'Country'
+                        ),
+                        React.createElement('input', { type: 'text', id: 'country', placeholder: 'Country', ref: 'countryCode',
+                            value: this.state.location.countryCode, onChange: this.handleCountryCodeChange }),
+                        React.createElement('input', { type: 'submit', value: 'Add Basic Information' })
+                    )
+                ),
+                React.createElement('br', null)
+            ),
+            React.createElement(
+                'div',
+                { className: 'profiles' },
+                React.createElement(_ProfileForm2.default, { onProfileSubmit: this.handleProfileSubmit })
+            )
         );
     }
 });
 exports.default = BasicsForm;
 
-},{"react":171}],174:[function(require,module,exports){
+},{"./ProfileForm":182,"react":171}],174:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -20887,8 +21079,17 @@ var Course = React.createClass({
         return { course: '' };
     },
     render: function render() {
-        return React.createElement('input', { type: 'text', placeholder: 'Course', ref: 'course',
-            value: this.state.course, onChange: this.handleCourseChange });
+        return React.createElement(
+            'div',
+            { className: 'courseForm' },
+            React.createElement(
+                'label',
+                { htmlFor: 'course' },
+                'Course Name'
+            ),
+            React.createElement('input', { type: 'text', id: 'course', placeholder: 'Course', ref: 'course',
+                value: this.state.course, onChange: this.handleCourseChange })
+        );
     }
 });
 exports.default = Course;
@@ -20908,12 +21109,14 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var React = require('react');
 
-var index = 0;
+
 var EducationForm = React.createClass({
     displayName: 'EducationForm',
 
+    index: 0,
+    key: 0,
     addCourseNode: function addCourseNode(index) {
-        return React.createElement(_Course2.default, { index: index, onAddCourse: this.handleCourseSubmit, key: index });
+        return React.createElement(_Course2.default, { index: this.index, onAddCourse: this.handleCourseSubmit, key: this.key });
     },
     handleSubmit: function handleSubmit(evt) {
         evt.preventDefault();
@@ -20937,7 +21140,8 @@ var EducationForm = React.createClass({
             courses: courses
         });
         this.emptyRefs();
-        console.log(index);
+        this.resetState();
+        console.log(this.index);
     },
     emptyRefs: function emptyRefs() {
         this.refs.institution.value = '';
@@ -20946,8 +21150,16 @@ var EducationForm = React.createClass({
         this.refs.startDate.value = '';
         this.refs.endDate.value = '';
         this.refs.gpa.value = '';
-        this.setState(this.getInitialState());
     },
+    resetState: function resetState() {
+        this.setState(this.getInitialState());
+        this.index = 0;
+        var newCourse = this.addCourseNode(this.index);
+        this.setState({ courseNodes: [].concat(newCourse) });
+        this.index++;
+        this.key++;
+    },
+
     handleInstitutionChange: function handleInstitutionChange(evt) {
         this.setState({ institution: evt.target.value });
     },
@@ -20978,9 +21190,10 @@ var EducationForm = React.createClass({
         //console.log(this.state);
     },
     handleNewCourse: function handleNewCourse(evt) {
-        var newCourse = this.addCourseNode(index);
+        var newCourse = this.addCourseNode(this.index);
         this.setState({ courseNodes: this.state.courseNodes.concat(newCourse) });
-        index++;
+        this.index++;
+        this.key++;
         console.log(this.state.courseNodes);
     },
     getInitialState: function getInitialState() {
@@ -20995,42 +21208,81 @@ var EducationForm = React.createClass({
         };
     },
     componentDidMount: function componentDidMount() {
-        var newCourse = this.addCourseNode(index);
+        var newCourse = this.addCourseNode(this.index);
         this.setState({ courseNodes: this.state.courseNodes.concat(newCourse) });
-        index++;
+        this.index++;
+        this.key++;
     },
     render: function render() {
         return React.createElement(
             'div',
             { className: 'education' },
             React.createElement(
-                'h2',
-                null,
-                'Education'
-            ),
-            React.createElement(
                 'form',
                 { className: 'educationForm', onSubmit: this.handleSubmit },
-                React.createElement('input', { type: 'text', placeholder: 'Institution', ref: 'institution',
-                    value: this.state.institution, onChange: this.handleInstitutionChange }),
-                React.createElement('input', { type: 'text', placeholder: 'Area of study', ref: 'area',
-                    value: this.state.area, onChange: this.handleAreaChange }),
-                React.createElement('input', { type: 'text', placeholder: 'Degree', ref: 'studyType',
-                    value: this.state.studyType, onChange: this.handleStudyTypeChange }),
-                React.createElement('input', { type: 'text', placeholder: 'Start Date', ref: 'startDate',
-                    value: this.state.startDate, onChange: this.handleStartDateChange }),
-                React.createElement('input', { type: 'text', placeholder: 'End Date', ref: 'endDate',
-                    value: this.state.endDate, onChange: this.handleEndDateChange }),
-                React.createElement('input', { type: 'text', placeholder: 'GPA', ref: 'gpa',
-                    value: this.state.gpa, onChange: this.handleGPAChange }),
                 React.createElement(
-                    'h3',
+                    'fieldset',
                     null,
-                    'Courses'
-                ),
-                this.state.courseNodes,
-                React.createElement('input', { type: 'button', value: 'Add Course', onClick: this.handleNewCourse }),
-                React.createElement('input', { type: 'submit', value: 'Add education' })
+                    React.createElement(
+                        'legend',
+                        null,
+                        ' Education '
+                    ),
+                    React.createElement(
+                        'label',
+                        { htmlFor: 'institution' },
+                        ' Institution '
+                    ),
+                    React.createElement('input', { type: 'text', id: 'institution', placeholder: 'Institution', ref: 'institution',
+                        value: this.state.institution, onChange: this.handleInstitutionChange }),
+                    React.createElement(
+                        'label',
+                        { htmlFor: 'area' },
+                        'Area of Study'
+                    ),
+                    React.createElement('input', { type: 'text', id: 'area', placeholder: 'Area of study', ref: 'area',
+                        value: this.state.area, onChange: this.handleAreaChange }),
+                    React.createElement(
+                        'label',
+                        { htmlFor: 'degree' },
+                        'Degree'
+                    ),
+                    React.createElement('input', { type: 'text', id: 'degree', placeholder: 'Degree', ref: 'studyType',
+                        value: this.state.studyType, onChange: this.handleStudyTypeChange }),
+                    React.createElement(
+                        'label',
+                        { htmlFor: 'startDate' },
+                        'Start Date'
+                    ),
+                    React.createElement('input', { type: 'month', id: 'startDate', placeholder: 'Start Date', ref: 'startDate',
+                        value: this.state.startDate, onChange: this.handleStartDateChange }),
+                    React.createElement(
+                        'label',
+                        { htmlFor: 'endDate' },
+                        'End Date'
+                    ),
+                    React.createElement('input', { type: 'month', id: 'endDate', placeholder: 'End Date', ref: 'endDate',
+                        value: this.state.endDate, onChange: this.handleEndDateChange }),
+                    React.createElement(
+                        'span',
+                        { className: 'gpa' },
+                        React.createElement(
+                            'label',
+                            { htmlFor: 'gpa' },
+                            'GPA'
+                        ),
+                        React.createElement('input', { type: 'text', placeholder: 'GPA i.e. 3.8 in a 4.0 scale', ref: 'gpa',
+                            value: this.state.gpa, onChange: this.handleGPAChange })
+                    ),
+                    React.createElement(
+                        'legend',
+                        null,
+                        'Courses'
+                    ),
+                    this.state.courseNodes,
+                    React.createElement('input', { type: 'button', value: 'Add Course', onClick: this.handleNewCourse }),
+                    React.createElement('input', { type: 'submit', value: 'Add education' })
+                )
             )
         );
     }
@@ -21052,13 +21304,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var React = require("react");
 
-var index = 0;
 var EducationList = React.createClass({
     displayName: "EducationList",
 
-    newEducationForm: function newEducationForm() {
-        return React.createElement(_EducationForm2.default, { onEducationSubmit: this.handleEducationSubmit, key: index });
-    },
     handleEducationSubmit: function handleEducationSubmit(education) {
         var educationArray = this.state.education;
         console.log(education);
@@ -21066,25 +21314,24 @@ var EducationList = React.createClass({
         this.state.education = educationArray;
         console.log(this.state.education);
     },
-    handleNewEducationForm: function handleNewEducationForm(evt) {
-        this.setState({ educationFormNodes: this.state.educationFormNodes.concat(this.newEducationForm()) });
-        index++;
-    },
+
     getInitialState: function getInitialState() {
-        return { education: [],
-            educationFormNodes: [] };
+        return { education: [] };
     },
     componentDidMount: function componentDidMount() {
         this.setState({ education: [] });
-        this.setState({ educationFormNodes: this.state.educationFormNodes.concat(this.newEducationForm()) });
-        index++;
     },
     render: function render() {
         return React.createElement(
             "div",
             { className: "EducationList" },
-            this.state.educationFormNodes,
-            React.createElement("input", { type: "submit", value: "Add Education Source", onClick: this.handleNewEducationForm })
+            React.createElement("a", { name: this.props.name }),
+            React.createElement(
+                "h2",
+                null,
+                "Education"
+            ),
+            React.createElement(_EducationForm2.default, { onEducationSubmit: this.handleEducationSubmit })
         );
     }
 });
@@ -21119,7 +21366,12 @@ var Highlights = React.createClass({
         return React.createElement(
             'span',
             { className: 'highlight' },
-            React.createElement('input', { type: 'text', placeholder: 'Highlights', ref: 'highlight',
+            React.createElement(
+                'label',
+                { htmlFor: 'highlight' },
+                'Highlights'
+            ),
+            React.createElement('input', { type: 'text', id: 'highlight', placeholder: 'Highlights', ref: 'highlight',
                 value: this.state.highlight, onChange: this.handleHighlightChange }),
             React.createElement('input', { type: 'submit', value: 'Add Highlight', onClick: this.handleSubmit })
         );
@@ -21144,8 +21396,9 @@ var InterestForm = React.createClass({
         if (!interest) {
             return;
         }
-        this.props.onInterestSubmit(interest);
+        this.props.onInterestSubmit({ interest: interest });
         this.refs.interest.value = '';
+        this.setState({ interest: '' });
     },
     handleInterestChange: function handleInterestChange(evt) {
         this.setState({ interest: evt.target.value });
@@ -21157,9 +21410,23 @@ var InterestForm = React.createClass({
         return React.createElement(
             'form',
             { className: 'interestForm', onSubmit: this.handleSubmit },
-            React.createElement('input', { type: 'text', placeholder: 'Interest', ref: 'interest',
-                value: this.state.interest, onChange: this.handleInterestChange }),
-            React.createElement('input', { type: 'submit', value: 'Add Interest' })
+            React.createElement(
+                'fieldset',
+                null,
+                React.createElement(
+                    'legend',
+                    null,
+                    'Interests'
+                ),
+                React.createElement(
+                    'label',
+                    { htmlFor: 'interest' },
+                    'Interest'
+                ),
+                React.createElement('input', { type: 'text', id: 'interest', placeholder: 'Interest', ref: 'interest',
+                    value: this.state.interest, onChange: this.handleInterestChange }),
+                React.createElement('input', { type: 'submit', value: 'Add Interest' })
+            )
         );
     }
 });
@@ -21196,6 +21463,7 @@ var InterestList = React.createClass({
         return React.createElement(
             'div',
             { className: 'interestList' },
+            React.createElement('a', { name: this.props.name }),
             React.createElement(
                 'h2',
                 null,
@@ -21239,10 +21507,29 @@ var LanguagesForm = React.createClass({
         return React.createElement(
             'span',
             { className: 'languagesForm' },
-            React.createElement('input', { type: 'text', placeholder: 'Language', ref: 'name',
+            React.createElement(
+                'legend',
+                null,
+                'Languages'
+            ),
+            React.createElement(
+                'label',
+                { htmlFor: 'languageName' },
+                'Language'
+            ),
+            React.createElement('input', { type: 'text', id: 'languageName', placeholder: 'Language', ref: 'name',
                 value: this.state.name, onChange: this.handleNameChange }),
-            React.createElement('input', { type: 'text', placeholder: 'Level', ref: 'level',
-                value: this.state.level, onChange: this.handleLevelChange })
+            React.createElement(
+                'span',
+                { className: 'languageLevel' },
+                React.createElement(
+                    'label',
+                    { htmlFor: 'languageLevel' },
+                    'Level'
+                ),
+                React.createElement('input', { type: 'text', className: 'languageLevel', placeholder: 'Level', ref: 'level',
+                    value: this.state.level, onChange: this.handleLevelChange })
+            )
         );
     }
 });
@@ -21256,51 +21543,75 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 var React = require('react');
-var Location = React.createClass({
-    displayName: 'Location',
+var NavBar = React.createClass({
+    displayName: 'NavBar',
 
-    getInitialState: function getInitialState() {
-        return { location: {
-                address: '',
-                postalCode: '',
-                city: '',
-                countryCode: '',
-                region: ''
-            } };
-    },
-    handleAddressChange: function handleAddressChange(evt) {
-        this.setState({ location: { address: evt.target.value } });
-    },
-    handlePostalCodeChange: function handlePostalCodeChange(evt) {
-        this.setState({ location: { postalCode: evt.target.value } });
-    },
-    handleCityChange: function handleCityChange(evt) {
-        this.setState({ location: { city: evt.target.value } });
-    },
-    handleCountryCodeChange: function handleCountryCodeChange(evt) {
-        this.setState({ location: { countryCode: evt.target.value } });
-    }, handleRegionChange: function handleRegionChange(evt) {
-        this.setState({ location: { region: evt.target.value } });
-    },
     render: function render() {
         return React.createElement(
-            'form',
-            { className: 'location' },
-            React.createElement('input', { type: 'text', placeholder: 'Address', ref: 'address',
-                value: this.state.location.address, onChange: this.handleAddressChange }),
-            React.createElement('input', { type: 'text', placeholder: 'Postal Code', ref: 'postalCode',
-                value: this.state.location.postalCode, onChange: this.handlePostalCodeChange }),
-            React.createElement('input', { type: 'text', placeholder: 'City', ref: 'city',
-                value: this.state.location.city, onChange: this.handleCityChange }),
-            React.createElement('input', { type: 'text', placeholder: 'Country', ref: 'countryCode',
-                value: this.state.location.countryCode, onChange: this.handleCountryCodeChange }),
-            React.createElement('input', { type: 'text', placeholder: 'State or Province', ref: 'region',
-                value: this.state.location.region, onChange: this.handleRegionChange })
+            'div',
+            { className: 'navBar' },
+            React.createElement(
+                'ul',
+                null,
+                React.createElement(
+                    'li',
+                    null,
+                    React.createElement(
+                        'a',
+                        { href: '#Basics' },
+                        'Basics'
+                    )
+                ),
+                React.createElement(
+                    'li',
+                    null,
+                    React.createElement(
+                        'a',
+                        { href: '#WorkExperience' },
+                        'Experience'
+                    )
+                ),
+                React.createElement(
+                    'li',
+                    null,
+                    React.createElement(
+                        'a',
+                        { href: '#Education' },
+                        'Education'
+                    )
+                ),
+                React.createElement(
+                    'li',
+                    null,
+                    React.createElement(
+                        'a',
+                        { href: '#SkillsAndLanguages' },
+                        'Skills and Languages'
+                    )
+                ),
+                React.createElement(
+                    'li',
+                    null,
+                    React.createElement(
+                        'a',
+                        { href: '#Interests' },
+                        'Interests'
+                    )
+                ),
+                React.createElement(
+                    'li',
+                    null,
+                    React.createElement(
+                        'a',
+                        { href: '#References' },
+                        'References'
+                    )
+                )
+            )
         );
     }
 });
-
-exports.default = Location;
+exports.default = NavBar;
 
 },{"react":171}],182:[function(require,module,exports){
 'use strict';
@@ -21317,7 +21628,7 @@ var ProfileForm = React.createClass({
         var network = this.refs.network.value.trim();
         var username = this.refs.username.value.trim();
         var url = this.refs.url.value.trim();
-        console.log('here2');
+
         if (!url || !username || !network) {
             return;
         }
@@ -21325,6 +21636,10 @@ var ProfileForm = React.createClass({
         this.refs.network.value = '';
         this.refs.username.value = '';
         this.refs.url.value = '';
+        this.setState({ network: '',
+            username: '',
+            url: '' });
+        console.log('here2');
     },
     handleNetworkChange: function handleNetworkChange(evt) {
         this.setState({ network: evt.target.value });
@@ -21344,59 +21659,160 @@ var ProfileForm = React.createClass({
         return React.createElement(
             'form',
             { className: 'profileForm', onSubmit: this.handleSubmit },
-            React.createElement('input', { type: 'text', placeholder: 'Network i.e. Twitter', ref: 'network',
-                value: this.state.network, onChange: this.handleNetworkChange }),
-            React.createElement('input', { type: 'text', placeholder: 'Username', ref: 'username',
-                value: this.state.username, onChange: this.handleUsernameChange }),
-            React.createElement('input', { type: 'text', placeholder: 'URL', ref: 'url',
-                value: this.state.url, onChange: this.handleURLChange }),
-            React.createElement('input', { type: 'submit', value: 'Post' })
+            React.createElement(
+                'fieldset',
+                null,
+                React.createElement(
+                    'legend',
+                    null,
+                    'Social Media Profiles '
+                ),
+                React.createElement(
+                    'label',
+                    { htmlFor: 'network' },
+                    'Network'
+                ),
+                React.createElement('input', { type: 'text', id: 'network', placeholder: 'Network i.e. Twitter', ref: 'network',
+                    value: this.state.network, onChange: this.handleNetworkChange }),
+                React.createElement(
+                    'label',
+                    { htmlFor: 'username' },
+                    'Username'
+                ),
+                React.createElement('input', { type: 'text', id: 'username', placeholder: 'Username', ref: 'username',
+                    value: this.state.username, onChange: this.handleUsernameChange }),
+                React.createElement(
+                    'label',
+                    { htmlFor: 'url' },
+                    'URL'
+                ),
+                React.createElement('input', { type: 'url', placeholder: 'URL', ref: 'url',
+                    value: this.state.url, onChange: this.handleURLChange }),
+                React.createElement('input', { type: 'submit', value: 'Add Profile' })
+            )
         );
     }
 });
 exports.default = ProfileForm;
 
 },{"react":171}],183:[function(require,module,exports){
-"use strict";
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+var React = require("react");
+var ReferenceForm = React.createClass({
+    displayName: 'ReferenceForm',
+
+    handleNameChange: function handleNameChange(evt) {
+        this.setState({ name: evt.target.value });
+    },
+    handleReferenceChange: function handleReferenceChange(evt) {
+        this.setState({ reference: evt.target.value });
+        var name = this.refs.name.value.trim();
+        var reference = this.refs.reference.value.trim();
+        if (!reference || !name) {
+            return;
+        }
+        this.props.onReferenceSubmit({ name: name, reference: reference });
+    },
+    getInitialState: function getInitialState() {
+        return { name: '',
+            reference: '' };
+    },
+    render: function render() {
+        return React.createElement(
+            'span',
+            { className: 'referenceForm' },
+            React.createElement(
+                'label',
+                { htmlFor: 'referenceName' },
+                'Name'
+            ),
+            React.createElement('input', { type: 'text', id: 'referenceName', placeholder: 'Name', ref: 'name',
+                value: this.state.name, onChange: this.handleNameChange }),
+            React.createElement(
+                'label',
+                { htmlFor: 'reference' },
+                'Contact'
+            ),
+            React.createElement('input', { type: 'text', id: 'reference', placeholder: 'Contact', ref: 'reference',
+                value: this.state.value, onChange: this.handleReferenceChange })
+        );
+    }
+});
+exports.default = ReferenceForm;
+
+},{"react":171}],184:[function(require,module,exports){
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _ProfileForm = require("./ProfileForm");
+var _ReferenceForm = require('./ReferenceForm');
 
-var _ProfileForm2 = _interopRequireDefault(_ProfileForm);
+var _ReferenceForm2 = _interopRequireDefault(_ReferenceForm);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var React = require("react");
+var React = require('react');
 
-var Profiles = React.createClass({
-    displayName: "Profiles",
+var ReferenceList = React.createClass({
+    displayName: 'ReferenceList',
 
-    handleProfileSubmit: function handleProfileSubmit(profile) {
-        console.log(profile);
-        var profileArray = this.state.profiles;
-        var newProfileArray = profileArray.concat([profile]);
-        this.setState(this.state.profiles = newProfileArray);
-        console.log(this.state.profiles);
+    reference: {},
+    handleSubmit: function handleSubmit(evt) {
+        evt.preventDefault();
+        if (this.reference === 0) {
+            return;
+        }
+        var references = this.state.references;
+        references = references.concat(this.reference);
+        this.state.references = references;
+        this.reference = {};
+        console.log(this.state);
     },
+    handleReferenceSubmit: function handleReferenceSubmit(reference) {
+        this.reference = reference;
+    },
+
     getInitialState: function getInitialState() {
-        return { profiles: [] };
+        return { references: [] };
     },
     render: function render() {
         return React.createElement(
-            "div",
-            { className: "profiles" },
-            React.createElement(_ProfileForm2.default, { onProfileSubmit: this.handleProfileSubmit }),
-            React.createElement(_ProfileForm2.default, { onProfileSubmit: this.handleProfileSubmit }),
-            React.createElement(_ProfileForm2.default, { onProfileSubmit: this.handleProfileSubmit })
+            'div',
+            { className: 'references' },
+            React.createElement('a', { name: this.props.name }),
+            React.createElement(
+                'h2',
+                null,
+                ' References '
+            ),
+            React.createElement(
+                'form',
+                { className: 'referenceList', onSubmit: this.handleSubmit },
+                React.createElement(
+                    'fieldset',
+                    null,
+                    React.createElement(
+                        'legend',
+                        null,
+                        'References'
+                    ),
+                    React.createElement(_ReferenceForm2.default, { onReferenceSubmit: this.handleReferenceSubmit }),
+                    React.createElement('input', { type: 'submit', value: 'Add reference' })
+                )
+            )
         );
     }
-});
-exports.default = Profiles;
 
-},{"./ProfileForm":182,"react":171}],184:[function(require,module,exports){
+});
+exports.default = ReferenceList;
+
+},{"./ReferenceForm":183,"react":171}],185:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -21423,6 +21839,14 @@ var _InterestList = require('./InterestList');
 
 var _InterestList2 = _interopRequireDefault(_InterestList);
 
+var _ReferenceList = require('./ReferenceList');
+
+var _ReferenceList2 = _interopRequireDefault(_ReferenceList);
+
+var _NavBar = require('./NavBar');
+
+var _NavBar2 = _interopRequireDefault(_NavBar);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var React = require('react');
@@ -21436,16 +21860,21 @@ var Resume = React.createClass({
             { className: 'resume' },
             React.createElement(
                 'h1',
-                null,
+                { className: 'pageTitle' },
                 ' RESUME '
             ),
-            React.createElement(_InterestList2.default, null)
+            React.createElement(_Basics2.default, { name: "Basics" }),
+            React.createElement(_WorkExperience2.default, { name: "WorkExperience" }),
+            React.createElement(_EducationList2.default, { name: "Education" }),
+            React.createElement(_SkillsAndLanguages2.default, { name: "SkillsAndLanguages" }),
+            React.createElement(_InterestList2.default, { name: 'Interests' }),
+            React.createElement(_ReferenceList2.default, { name: 'References' })
         );
     }
 });
 exports.default = Resume;
 
-},{"./Basics":172,"./EducationList":176,"./InterestList":179,"./SkillsAndLanguages":185,"./WorkExperience":187,"react":171}],185:[function(require,module,exports){
+},{"./Basics":172,"./EducationList":176,"./InterestList":179,"./NavBar":181,"./ReferenceList":184,"./SkillsAndLanguages":186,"./WorkExperience":188,"react":171}],186:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -21495,35 +21924,44 @@ var SkillsAndLanguages = React.createClass({
     },
     render: function render() {
         return React.createElement(
-            'form',
-            { className: 'skillsAndLanguagesForm', onSubmit: this.handleSubmit },
+            'div',
+            { className: 'skillsAndLanguages' },
+            React.createElement('a', { name: this.props.name }),
             React.createElement(
-                'span',
-                { className: 'languages' },
-                React.createElement(
-                    'h2',
-                    null,
-                    'Languages'
-                ),
-                React.createElement(_LanguagesForm2.default, { onLanguageChange: this.onLanguageChange })
+                'h2',
+                null,
+                'Skills and Languages'
             ),
             React.createElement(
-                'span',
-                { className: 'skills' },
+                'form',
+                { className: 'skillsAndLanguagesForm', onSubmit: this.handleSubmit },
                 React.createElement(
-                    'h2',
+                    'fieldset',
                     null,
-                    'Skills'
-                ),
-                React.createElement(_SkillsForm2.default, { onSkillChange: this.onSkillChange })
-            ),
-            React.createElement('input', { type: 'submit', value: 'Add Skills and Languages' })
+                    React.createElement(
+                        'legend',
+                        null,
+                        'Skills and Languages '
+                    ),
+                    React.createElement(
+                        'span',
+                        { className: 'languages' },
+                        React.createElement(_LanguagesForm2.default, { onLanguageChange: this.onLanguageChange })
+                    ),
+                    React.createElement(
+                        'span',
+                        { className: 'skills' },
+                        React.createElement(_SkillsForm2.default, { onSkillChange: this.onSkillChange })
+                    ),
+                    React.createElement('input', { type: 'submit', value: 'Add Skills and Languages' })
+                )
+            )
         );
     }
 });
 exports.default = SkillsAndLanguages;
 
-},{"./LanguagesForm":180,"./SkillsForm":186,"react":171}],186:[function(require,module,exports){
+},{"./LanguagesForm":180,"./SkillsForm":187,"react":171}],187:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -21556,16 +21994,35 @@ var SkillsForm = React.createClass({
         return React.createElement(
             'span',
             { className: 'skillsForm' },
-            React.createElement('input', { type: 'text', placeholder: 'Skill', ref: 'name',
+            React.createElement(
+                'legend',
+                null,
+                'Skills'
+            ),
+            React.createElement(
+                'label',
+                { htmlFor: 'skillName' },
+                'Name'
+            ),
+            React.createElement('input', { type: 'text', id: 'skillName', placeholder: 'Skill', ref: 'name',
                 value: this.state.name, onChange: this.handleNameChange }),
-            React.createElement('input', { type: 'text', placeholder: 'Level', ref: 'level',
-                value: this.state.level, onChange: this.handleLevelChange })
+            React.createElement(
+                'span',
+                { className: 'skillLevel' },
+                React.createElement(
+                    'label',
+                    { htmlFor: 'skillLevel' },
+                    'Level'
+                ),
+                React.createElement('input', { type: 'text', className: 'skillLevel', placeholder: 'Level', ref: 'level',
+                    value: this.state.level, onChange: this.handleLevelChange })
+            )
         );
     }
 });
 exports.default = SkillsForm;
 
-},{"react":171}],187:[function(require,module,exports){
+},{"react":171}],188:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -21596,21 +22053,19 @@ var WorkExperience = React.createClass({
         return React.createElement(
             "div",
             { className: "work" },
+            React.createElement("a", { name: this.props.name }),
             React.createElement(
                 "h2",
                 null,
                 "Work Experience"
             ),
-            React.createElement(_WorkForm2.default, { onWorkSubmit: this.handleWorkSubmit }),
-            React.createElement(_WorkForm2.default, { onWorkSubmit: this.handleWorkSubmit }),
-            React.createElement(_WorkForm2.default, { onWorkSubmit: this.handleWorkSubmit }),
-            React.createElement(_WorkForm2.default, { onWorkSubmit: this.handleWorkSubmit })
+            React.createElement(_WorkForm2.default, { onWorkSubmit: this.handleWorkSubmit, name: "WorkExperience" })
         );
     }
 });
 exports.default = WorkExperience;
 
-},{"./WorkForm":188,"react":171}],188:[function(require,module,exports){
+},{"./WorkForm":189,"react":171}],189:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -21654,6 +22109,7 @@ var WorkForm = React.createClass({
         this.refs.startDate.value = '';
         this.refs.endDate.value = '';
         this.refs.summary.value = '';
+        this.setState(this.getInitialState());
     },
     handleCompanyChange: function handleCompanyChange(evt) {
         this.setState({ company: evt.target.value });
@@ -21697,28 +22153,58 @@ var WorkForm = React.createClass({
             React.createElement(
                 "form",
                 { className: "workForm", onSubmit: this.handleSubmit },
-                React.createElement("input", { type: "text", placeholder: "Company", ref: "company",
-                    value: this.state.company, onChange: this.handleCompanyChange }),
-                React.createElement("input", { type: "text", placeholder: "Position", ref: "position",
-                    value: this.state.position, onChange: this.handlePositionChange }),
-                React.createElement("input", { type: "text", placeholder: "Website", ref: "website",
-                    value: this.state.website, onChange: this.handleWebsiteChange }),
-                React.createElement("input", { type: "text", placeholder: "Start Date", ref: "startDate",
-                    value: this.state.startDate, onChange: this.handleStartDateChange }),
-                React.createElement("input", { type: "text", placeholder: "End Date", ref: "endDate",
-                    value: this.state.endDate, onChange: this.handleEndDateChange }),
-                React.createElement("textArea", { placeholder: "Summary", ref: "summary",
-                    value: this.state.summary, onChange: this.handleSummaryChange }),
-                React.createElement(_Highlights2.default, { onHighlightSubmit: this.handleHighlightSubmit }),
-                React.createElement("input", { type: "submit", value: "Add Work Experience" })
-            ),
-            React.createElement(
-                "div",
-                { className: "highlights" },
                 React.createElement(
-                    "h3",
+                    "fieldset",
                     null,
-                    " Highlights "
+                    React.createElement(
+                        "legend",
+                        null,
+                        " Work Experience "
+                    ),
+                    React.createElement(
+                        "label",
+                        { htmlFor: "company" },
+                        "Company"
+                    ),
+                    React.createElement("input", { type: "text", id: "company", placeholder: "Company", ref: "company",
+                        value: this.state.company, onChange: this.handleCompanyChange }),
+                    React.createElement(
+                        "label",
+                        { htmlFor: "position" },
+                        "Position"
+                    ),
+                    React.createElement("input", { type: "text", id: "position", placeholder: "Position", ref: "position",
+                        value: this.state.position, onChange: this.handlePositionChange }),
+                    React.createElement(
+                        "label",
+                        { htmlFor: "website" },
+                        "Website"
+                    ),
+                    React.createElement("input", { type: "url", id: "website", placeholder: "Website", ref: "website",
+                        value: this.state.website, onChange: this.handleWebsiteChange }),
+                    React.createElement(
+                        "label",
+                        { htmlFor: "startDateCompany" },
+                        "Start Date"
+                    ),
+                    React.createElement("input", { type: "month", id: "startDateCompany", placeholder: "Start Date", ref: "startDate",
+                        value: this.state.startDate, onChange: this.handleStartDateChange }),
+                    React.createElement(
+                        "label",
+                        { htmlFor: "endDateCompany" },
+                        "End Date"
+                    ),
+                    React.createElement("input", { type: "month", id: "endDateCompany", placeholder: "End Date", ref: "endDate",
+                        value: this.state.endDate, onChange: this.handleEndDateChange }),
+                    React.createElement(
+                        "label",
+                        { htmlFor: "workSummary" },
+                        "Summary"
+                    ),
+                    React.createElement("textArea", { className: "workSummary", placeholder: "Summary", ref: "summary",
+                        value: this.state.summary, onChange: this.handleSummaryChange }),
+                    React.createElement(_Highlights2.default, { onHighlightSubmit: this.handleHighlightSubmit }),
+                    React.createElement("input", { type: "submit", value: "Add Work Experience" })
                 )
             )
         );
@@ -21726,18 +22212,23 @@ var WorkForm = React.createClass({
 });
 exports.default = WorkForm;
 
-},{"./Highlights":177,"react":171}],189:[function(require,module,exports){
+},{"./Highlights":177,"react":171}],190:[function(require,module,exports){
 'use strict';
 
 var _Resume = require('./Resume');
 
 var _Resume2 = _interopRequireDefault(_Resume);
 
+var _NavBar = require('./NavBar');
+
+var _NavBar2 = _interopRequireDefault(_NavBar);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var React = require('react');
 var ReactDOM = require('react-dom');
 
+ReactDOM.render(React.createElement(_NavBar2.default, null), document.getElementById('nav'));
 ReactDOM.render(React.createElement(_Resume2.default, null), document.getElementById("content"));
 
-},{"./Resume":184,"react":171,"react-dom":2}]},{},[189]);
+},{"./NavBar":181,"./Resume":185,"react":171,"react-dom":2}]},{},[190]);
