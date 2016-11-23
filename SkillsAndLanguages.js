@@ -30,17 +30,22 @@ var SkillsAndLanguages = React.createClass({
     },
     render: function(){
         return (
+            <div className = 'skillsAndLanguages'>
+            <a name = {this.props.name}/>
+            <h2>Skills and Languages</h2>
             <form className = 'skillsAndLanguagesForm' onSubmit = {this.handleSubmit}>
+                <fieldset>
+                <legend>Skills and Languages </legend>
                 <span className = 'languages'>
-                    <h2>Languages</h2>
                     <LanguagesForm onLanguageChange = {this.onLanguageChange} />
                 </span>
                 <span className = 'skills'>
-                    <h2>Skills</h2>
                     <SkillsForm onSkillChange = {this.onSkillChange} />
                 </span>
                 <input type = 'submit' value = 'Add Skills and Languages'/>
+                </fieldset>
             </form>
+            </div>
         )
     }
 });

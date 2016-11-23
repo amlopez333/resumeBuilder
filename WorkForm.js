@@ -27,6 +27,7 @@ var WorkForm = React.createClass({
         this.refs.startDate.value = '';
         this.refs.endDate.value = '';
         this.refs.summary.value = '';
+        this.setState(this.getInitialState());
     },
     handleCompanyChange: function(evt){
         this.setState({company: evt.target.value});
@@ -67,25 +68,30 @@ var WorkForm = React.createClass({
         return(
             <div className = 'experience'>
                 <form className = 'workForm' onSubmit = {this.handleSubmit}>
-                    <input type = 'text' placeholder = 'Company' ref = 'company' 
-                    value = {this.state.company} onChange = {this.handleCompanyChange} />
-                    <input type = 'text' placeholder = 'Position' ref = 'position'
-                    value = {this.state.position} onChange = {this.handlePositionChange} />
-                    <input type = 'text' placeholder = 'Website' ref = 'website'
-                    value = {this.state.website} onChange = {this.handleWebsiteChange} />
-                    <input type = 'text' placeholder = 'Start Date' ref = 'startDate'
-                    value = {this.state.startDate} onChange = {this.handleStartDateChange} />
-                    <input type = 'text' placeholder = 'End Date' ref = 'endDate'
-                    value = {this.state.endDate} onChange = {this.handleEndDateChange} />
-                    <textArea placeholder = 'Summary' ref = 'summary'
-                    value = {this.state.summary} onChange = {this.handleSummaryChange} />
+                <fieldset>
+                <legend> Work Experience </legend>
+                    <label htmlFor = 'company'>Company</label>
+                        <input type = 'text' id = 'company' placeholder = 'Company' ref = 'company' 
+                        value = {this.state.company} onChange = {this.handleCompanyChange} />
+                    <label htmlFor = 'position'>Position</label>
+                        <input type = 'text' id = 'position' placeholder = 'Position' ref = 'position'
+                        value = {this.state.position} onChange = {this.handlePositionChange} />
+                    <label htmlFor = 'website'>Website</label>
+                        <input type = 'url' id = 'website' placeholder = 'Website' ref = 'website'
+                        value = {this.state.website} onChange = {this.handleWebsiteChange} />
+                    <label htmlFor = 'startDateCompany'>Start Date</label>
+                        <input type = 'month' id = 'startDateCompany' placeholder = 'Start Date' ref = 'startDate'
+                        value = {this.state.startDate} onChange = {this.handleStartDateChange} />
+                    <label htmlFor = 'endDateCompany'>End Date</label>
+                        <input type = 'month' id = 'endDateCompany' placeholder = 'End Date' ref = 'endDate'
+                        value = {this.state.endDate} onChange = {this.handleEndDateChange} />
+                    <label htmlFor = 'workSummary'>Summary</label>
+                        <textArea className = 'workSummary' placeholder = 'Summary' ref = 'summary'
+                        value = {this.state.summary} onChange = {this.handleSummaryChange} />
                     <Highlights onHighlightSubmit = {this.handleHighlightSubmit} />
                     <input type = 'submit' value = 'Add Work Experience' />
-                    
+                </fieldset> 
                 </form>
-                 <div className = 'highlights' >
-                    <h3> Highlights </h3>
-                </div>
             </div>
             
             

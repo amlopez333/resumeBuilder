@@ -13,6 +13,7 @@ var InterestList = React.createClass({
     render: function(){
         return(
             <div className = 'interestList'>
+                <a name = {this.props.name}/>
                 <h2>Interests</h2>    
                 <InterestForm onInterestSubmit = {this.handleInterestSubmit} />
             </div>

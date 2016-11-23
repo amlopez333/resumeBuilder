@@ -7,7 +7,10 @@ var Profiles = React.createClass({
         var newProfileArray = profileArray.concat([profile]);
         this.setState(this.state.profiles = newProfileArray);
         console.log(this.state.profiles);
+        this.emptyRefs();
+        this.emptyState();
     },
+    emptyRefs: function();
     getInitialState:function(){
         return {profiles: []};
     },

@@ -1,0 +1,1 @@
+browserify app.js -o ../client/bundle.js -t [ babelify ]

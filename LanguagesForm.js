@@ -21,10 +21,15 @@ var LanguagesForm = React.createClass({
     render: function(){
         return(
             <span className = 'languagesForm'>
-                <input type = 'text' placeholder = 'Language' ref = 'name'
-                value = {this.state.name} onChange = {this.handleNameChange} />
-                <input type = 'text' placeholder = 'Level' ref = 'level' 
-                value = {this.state.level} onChange = {this.handleLevelChange} />
+                <legend>Languages</legend>
+                <label htmlFor = 'languageName'>Language</label>
+                    <input type = 'text' id = 'languageName' placeholder = 'Language' ref = 'name'
+                    value = {this.state.name} onChange = {this.handleNameChange} />
+                <span className = 'languageLevel'>
+                <label htmlFor = 'languageLevel'>Level</label>
+                    <input type = 'text' className = 'languageLevel'  placeholder = 'Level' ref = 'level' 
+                    value = {this.state.level} onChange = {this.handleLevelChange} />
+                </span>
             </span>
         );
     }

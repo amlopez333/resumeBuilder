@@ -1,9 +1,11 @@
 var React = require('react');
 import Course from './Course';
-var index = 0;
+
 var EducationForm = React.createClass({
+    index: 0,
+    key: 0,
     addCourseNode: function(index){
-        return (<Course index = {index} onAddCourse = {this.handleCourseSubmit} key = {index} />);
+        return (<Course index = {this.index} onAddCourse = {this.handleCourseSubmit} key = {this.key} />);
     },
     handleSubmit: function(evt){
         evt.preventDefault();
@@ -27,7 +29,8 @@ var EducationForm = React.createClass({
             courses: courses
         });
         this.emptyRefs();
-        console.log(index);
+        this.resetState();
+        console.log(this.index);
     },
     emptyRefs: function(){
        this.refs.institution.value = '';
@@ -36,8 +39,16 @@ var EducationForm = React.createClass({
         this.refs.startDate.value = '';
         this.refs.endDate.value = '';
         this.refs.gpa.value = '';
-        this.setState(this.getInitialState());
     },
+    resetState: function(){
+        this.setState(this.getInitialState());
+        this.index = 0;
+        var newCourse = this.addCourseNode(this.index);
+        this.setState({courseNodes: [].concat(newCourse)})
+        this.index ++;
+        this.key++;
+    },
+
     handleInstitutionChange: function(evt){
         this.setState({institution: evt.target.value});
     },
@@ -68,9 +79,10 @@ var EducationForm = React.createClass({
         //console.log(this.state);
     },
     handleNewCourse:function(evt){
-        var newCourse = this.addCourseNode(index);
+        var newCourse = this.addCourseNode(this.index);
         this.setState({courseNodes: this.state.courseNodes.concat(newCourse)})
-        index ++;
+        this.index ++;
+        this.key++;
         console.log(this.state.courseNodes);
     },
     getInitialState: function(){
@@ -85,31 +97,43 @@ var EducationForm = React.createClass({
         };
     },
     componentDidMount: function(){
-        var newCourse = this.addCourseNode(index);
+        var newCourse = this.addCourseNode(this.index);
         this.setState({courseNodes: this.state.courseNodes.concat(newCourse)})
-        index ++;
+        this.index ++;
+        this.key++;
     },
     render: function(){
         return(
             <div className = 'education'>
-                <h2>Education</h2>
                 <form className = 'educationForm' onSubmit = {this.handleSubmit} >
-                    <input type = 'text' placeholder = 'Institution' ref = 'institution'
-                    value = {this.state.institution} onChange = {this.handleInstitutionChange} />
-                    <input type = 'text' placeholder = 'Area of study' ref = 'area'
-                    value = {this.state.area} onChange = {this.handleAreaChange} />
-                    <input type = 'text' placeholder = 'Degree' ref = 'studyType'
-                    value = {this.state.studyType} onChange = {this.handleStudyTypeChange} />
-                    <input type = 'text' placeholder = 'Start Date' ref = 'startDate'
-                    value = {this.state.startDate} onChange = {this.handleStartDateChange} />
-                    <input type = 'text' placeholder = 'End Date' ref = 'endDate'
-                    value = {this.state.endDate} onChange = {this.handleEndDateChange} />
-                    <input type = 'text' placeholder = 'GPA' ref = 'gpa'
-                    value = {this.state.gpa} onChange = {this.handleGPAChange} />
-                    <h3>Courses</h3>
+                <fieldset>
+                <legend> Education </legend>
+                    <label htmlFor = 'institution'> Institution </label>
+                        <input type = 'text' id = 'institution' placeholder = 'Institution' ref = 'institution'
+                        value = {this.state.institution} onChange = {this.handleInstitutionChange} />
+                    <label htmlFor = 'area'>Area of Study</label>
+                        <input type = 'text' id = 'area' placeholder = 'Area of study' ref = 'area'
+                        value = {this.state.area} onChange = {this.handleAreaChange} />
+                    <label htmlFor = 'degree'>Degree</label>
+                        <input type = 'text' id = 'degree' placeholder = 'Degree' ref = 'studyType'
+                        value = {this.state.studyType} onChange = {this.handleStudyTypeChange} />
+                    <label htmlFor = 'startDate'>Start Date</label>
+                        <input type = 'month' id = 'startDate' placeholder = 'Start Date' ref = 'startDate'
+                        value = {this.state.startDate} onChange = {this.handleStartDateChange} />
+                    <label htmlFor = 'endDate'>End Date</label>
+                        <input type = 'month' id = 'endDate' placeholder = 'End Date' ref = 'endDate'
+                        value = {this.state.endDate} onChange = {this.handleEndDateChange} />
+                    <span className ='gpa'>
+                    <label htmlFor = 'gpa'>GPA</label>
+                        <input type = 'text' placeholder = 'GPA i.e. 3.8 in a 4.0 scale' ref = 'gpa'
+                        value = {this.state.gpa} onChange = {this.handleGPAChange} />
+                    </span>
+                    <legend>Courses</legend>
+                    
                     {this.state.courseNodes}
                     <input type = 'button' value = 'Add Course' onClick = {this.handleNewCourse} />
                     <input type = 'submit' value = 'Add education'/>
+                </fieldset>
                 </form>
             </div>
         );

@@ -13,11 +13,9 @@ var WorkExperience = React.createClass({
     render: function(){
         return(
             <div className = 'work'>
+                <a name = {this.props.name} />
                 <h2>Work Experience</h2>
-                <WorkForm onWorkSubmit = {this.handleWorkSubmit} />
-                <WorkForm onWorkSubmit = {this.handleWorkSubmit} />
-                <WorkForm onWorkSubmit = {this.handleWorkSubmit} />
-                <WorkForm onWorkSubmit = {this.handleWorkSubmit} />
+                <WorkForm onWorkSubmit = {this.handleWorkSubmit} name = {"WorkExperience"}/>
             </div>
         );
         

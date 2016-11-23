@@ -26,16 +26,16 @@ var Location = React.createClass({
     render: function(){
         return(
             <form className = 'location'>
-            <input type = 'text' placeholder = 'Address' ref = 'address'
-            value = {this.state.location.address} onChange = {this.handleAddressChange}/>
-            <input type = 'text' placeholder = 'Postal Code' ref = 'postalCode' 
-            value = {this.state.location.postalCode} onChange = {this.handlePostalCodeChange}/>
-            <input type = 'text' placeholder = 'City' ref = 'city' 
-            value = {this.state.location.city} onChange = {this.handleCityChange}/>
-            <input type = 'text' placeholder = 'Country' ref = 'countryCode' 
-            value = {this.state.location.countryCode} onChange = {this.handleCountryCodeChange}/>
-            <input type = 'text' placeholder = 'State or Province' ref = 'region' 
-            value = {this.state.location.region} onChange = {this.handleRegionChange}/>
+                <input type = 'text' placeholder = 'Address' ref = 'address'
+                value = {this.state.location.address} onChange = {this.handleAddressChange}/>
+                <input type = 'text' placeholder = 'Postal Code' ref = 'postalCode' 
+                value = {this.state.location.postalCode} onChange = {this.handlePostalCodeChange}/>
+                <input type = 'text' placeholder = 'City' ref = 'city' 
+                value = {this.state.location.city} onChange = {this.handleCityChange}/>
+                <input type = 'text' placeholder = 'Country' ref = 'countryCode' 
+                value = {this.state.location.countryCode} onChange = {this.handleCountryCodeChange}/>
+                <input type = 'text' placeholder = 'State or Province' ref = 'region' 
+                value = {this.state.location.region} onChange = {this.handleRegionChange}/>
             </form>
         )
     }

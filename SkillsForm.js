@@ -22,10 +22,15 @@ var SkillsForm = React.createClass({
     render: function(){
         return(
             <span className = 'skillsForm'>
-                <input type = 'text' placeholder = 'Skill' ref = 'name'
-                value = {this.state.name} onChange = {this.handleNameChange} />
-                <input type = 'text' placeholder = 'Level' ref = 'level'
-                value =  {this.state.level} onChange = {this.handleLevelChange} />
+            <legend>Skills</legend>
+                <label htmlFor = 'skillName'>Name</label>
+                    <input type = 'text' id = 'skillName' placeholder = 'Skill' ref = 'name'
+                    value = {this.state.name} onChange = {this.handleNameChange} />
+                <span className = 'skillLevel'>
+                <label htmlFor = 'skillLevel'>Level</label>
+                    <input type = 'text' className = 'skillLevel' placeholder = 'Level' ref = 'level'
+                    value =  {this.state.level} onChange = {this.handleLevelChange} />
+                </span>
             </span>
         )
     }

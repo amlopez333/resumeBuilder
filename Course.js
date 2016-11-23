@@ -11,8 +11,11 @@ var Course = React.createClass({
     },
     render: function(){
         return(
-                <input type = 'text' placeholder = 'Course' ref = 'course' 
-                value = {this.state.course} onChange = {this.handleCourseChange}/>
+                <div className = 'courseForm'>
+                    <label htmlFor = 'course'>Course Name</label>
+                        <input type = 'text' id = 'course' placeholder = 'Course' ref = 'course' 
+                        value = {this.state.course} onChange = {this.handleCourseChange}/>
+                </div>
         );
     }
 });

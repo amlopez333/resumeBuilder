@@ -18,7 +18,8 @@ var Highlights = React.createClass({
     render: function(){
         return(
             <span className = 'highlight'>
-                <input type = 'text' placeholder = 'Highlights' ref = 'highlight'
+                <label htmlFor = 'highlight'>Highlights</label>
+                <input type = 'text' id = 'highlight' placeholder = 'Highlights' ref = 'highlight'
                 value = {this.state.highlight} onChange = {this.handleHighlightChange} />
                 <input type = 'submit' value = 'Add Highlight' onClick = {this.handleSubmit} />
             </span>

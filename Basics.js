@@ -1,19 +1,22 @@
 var React = require('react');
 import BasicsForm from "./BasicsForm";
-import Location from "./Location"
-import Profiles from './Profiles'
 var Basics = React.createClass({
-    
+    key: 0,
+    getInitialState: function(){
+        return {basics: {}}
+    },
+    handleBasicsSubmit: function(basics){
+        this.setState({basics: basics});
+        console.log(this.state);
+    },
     render:function(){
         return(
             <div className = 'basics'>
-            <h2> Basic Information </h2>
-            <BasicsForm />
-            <h2> Location </h2>
-            <Location />
-            <h2> Profiles </h2>
-            <Profiles />
+            <a name = {this.props.name}/> 
+            <h2> Basics </h2>
+            <BasicsForm onBasicsSubmit = {this.handleBasicsSubmit}/>
             </div>
+            
         );
     }
 });
